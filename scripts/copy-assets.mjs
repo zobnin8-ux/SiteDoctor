@@ -30,5 +30,5 @@ for (const t of targets) {
   const dest = path.join(root, t.dest);
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.copyFileSync(src, dest);
-  console.log("OK", t.dest);
+  console.log("OK", t.dest, "←", path.basename(src));
 }

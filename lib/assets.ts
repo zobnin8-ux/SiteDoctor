@@ -9,6 +9,7 @@ function assetUrl(path: string): string {
 
 export const ASSETS = {
   robot: {
+    /** Hero: робот со стетоскопом, фон прозрачный; файл должен совпадать с содержимым, не только с именем. */
     hero: assetUrl(
       "/robot/ChatGPT_Image_9_мая_2026_г___09_36_21.png"
     ),
