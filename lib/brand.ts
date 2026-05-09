@@ -9,6 +9,3 @@ export const BRAND = {
   parentBrand: "Zobnin AI",
   parentUrl: "https://zobnin.ai",
 } as const;
-
-/** Статичное число для MVP; позже — из БД */
-export const SITES_SCANNED_DISPLAY = 1247;

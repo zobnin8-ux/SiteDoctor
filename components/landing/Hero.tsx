@@ -1,7 +1,6 @@
 "use client";
 
 import { HeroRobot } from "@/components/shared/HeroRobot";
-import { SITES_SCANNED_DISPLAY } from "@/lib/brand";
 import { UrlForm } from "@/components/landing/UrlForm";
 import { Reveal } from "@/components/landing/motion";
 
@@ -16,13 +15,6 @@ export function Hero() {
         <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:gap-16">
           <div className="flex w-full flex-col items-center lg:order-2 lg:w-[520px] lg:max-w-[48%]">
             <HeroRobot />
-            <p className="mt-4 text-center text-sm text-[var(--text-muted)] lg:mt-4">
-              Сегодня осмотрено:{" "}
-              <span className="font-mono font-medium text-[var(--text-primary)]">
-                {SITES_SCANNED_DISPLAY.toLocaleString("ru-RU")}
-              </span>{" "}
-              сайтов
-            </p>
           </div>
 
           <div className="w-full flex-1 text-center lg:order-1 lg:text-left">

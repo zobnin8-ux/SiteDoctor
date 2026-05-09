@@ -17,7 +17,7 @@ export function HeroRobot() {
     <div className="robot-hero-container relative mx-auto w-[280px] sm:w-[320px] lg:w-[520px]">
       <Image
         src={ASSETS.robot.hero}
-        alt="Site Doctor"
+        alt="Site Doctor — AI-диагност сайтов"
         width={520}
         height={520}
         priority
