@@ -138,4 +138,51 @@
   .scan-beam-animate {
     animation: scan-move 3s linear infinite;
   }
+
+  /* /scanning — центральный фокус (круги без прямоугольного робота) */
+  .scan-focal-ripples {
+    pointer-events: none;
+  }
+
+  .scan-focal-ripple {
+    left: 50%;
+    top: 50%;
+    width: 88px;
+    height: 88px;
+    margin-left: -44px;
+    margin-top: -44px;
+    opacity: 0;
+    animation: scan-focal-ripple 2.4s ease-out infinite;
+  }
+
+  @keyframes scan-focal-ripple {
+    0% {
+      transform: scale(0.45);
+      opacity: 0.55;
+    }
+    100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  .scan-focal-core {
+    width: 10px;
+    height: 10px;
+    animation: scan-focal-core 1.85s ease-in-out infinite;
+  }
+
+  @keyframes scan-focal-core {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+      box-shadow: 0 0 24px rgba(0, 212, 255, 0.75);
+    }
+    50% {
+      opacity: 0.55;
+      transform: scale(1.35);
+      box-shadow: 0 0 40px rgba(0, 212, 255, 1);
+    }
+  }
 }

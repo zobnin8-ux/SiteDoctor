@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { Logo } from "@/components/shared/Logo";
+import { ScanningBackdrop } from "@/components/scanning/ScanningBackdrop";
 import { ScanningProgress } from "@/components/scanning/ScanningProgress";
 import { telegramHref } from "@/lib/telegram";
 
@@ -81,12 +82,16 @@ export function ScanningClient() {
         </div>
       </header>
 
-      <div className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center px-4 py-12">
-        <ScanningProgress
-          completedSteps={completedSteps}
-          progress={progress}
-          hostLabel={host}
-        />
+      <div className="relative flex min-h-[calc(100vh-3.5rem)] w-full flex-col">
+        <ScanningBackdrop />
+
+        <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 py-12">
+          <ScanningProgress
+            completedSteps={completedSteps}
+            progress={progress}
+            hostLabel={host}
+          />
+        </div>
       </div>
     </main>
   );

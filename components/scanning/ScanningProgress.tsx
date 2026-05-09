@@ -1,6 +1,6 @@
 "use client";
 
-import { ScanningRobot } from "@/components/shared/ScanningRobot";
+import { ScanningFocal } from "@/components/scanning/ScanningFocal";
 import { StepsList } from "@/components/scanning/StepsList";
 import { ProgressBar } from "@/components/scanning/ProgressBar";
 
@@ -25,7 +25,7 @@ export function ScanningProgress({
 }: Props) {
   return (
     <div className="flex w-full max-w-md flex-col items-center text-center">
-      <ScanningRobot />
+      <ScanningFocal />
 
       <p className="mt-6 font-mono-data text-xs font-medium uppercase tracking-[0.2em] text-[var(--accent-primary)]">
         WEBSITE X-RAY
