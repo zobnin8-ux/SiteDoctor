@@ -8,6 +8,8 @@ import { Faq } from "@/components/landing/Faq";
 import { FinalCta } from "@/components/landing/FinalCta";
 import { Footer } from "@/components/landing/Footer";
 
+export const revalidate = 60;
+
 export default function HomePage() {
   return (
     <>

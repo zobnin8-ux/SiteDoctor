@@ -10,6 +10,7 @@
     "copy-assets": "node scripts/copy-assets.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-slot": "^1.1.1",
     "class-variance-authority": "^0.7.1",

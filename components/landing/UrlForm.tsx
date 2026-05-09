@@ -17,6 +17,8 @@ type UrlFormProps = {
   centerMicroOnMobile?: boolean;
   /** Строка с галочками под формой (в финальном CTA — отдельная строка текста) */
   showMicroBullets?: boolean;
+  /** После успешной валидации URL, перед переходом на /scanning */
+  onValidSubmit?: () => void;
 };
 
 export function UrlForm({
@@ -24,6 +26,7 @@ export function UrlForm({
   microCentered,
   centerMicroOnMobile,
   showMicroBullets = true,
+  onValidSubmit,
 }: UrlFormProps) {
   const router = useRouter();
   const [value, setValue] = useState("");
@@ -37,6 +40,7 @@ export function UrlForm({
       setError("Проверьте адрес сайта");
       return;
     }
+    onValidSubmit?.();
     router.push(`/scanning?url=${encodeURIComponent(normalized)}`);
   }
 
