@@ -67,7 +67,7 @@ export function ScanningClient() {
       className="dark-zone relative min-h-screen overflow-hidden bg-[var(--bg-primary)] text-[var(--text-primary)]"
       style={{ backgroundImage: "url(/bg/grid-pattern.svg)" }}
     >
-      <header className="sticky top-0 z-10 border-b border-[var(--border)] bg-[var(--bg-primary)]/90 backdrop-blur-md">
+      <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-[var(--bg-primary)]/90 backdrop-blur-md">
         <div className="mx-auto grid h-14 w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 sm:px-6 lg:px-8">
           <Logo variant="dark" className="justify-self-start" />
           <span className="justify-self-center font-mono-data text-[10px] uppercase tracking-widest text-[var(--text-muted)] sm:text-xs">

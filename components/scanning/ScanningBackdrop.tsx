@@ -6,7 +6,7 @@ import { useState } from "react";
 import { ASSETS } from "@/lib/assets";
 
 /**
- * Атмосферный слой: робот на весь кадр, низкая непрозрачность + градиенты для читаемости текста.
+ * Робот на весь блок сканирования: виден сквозь лёгкие градиенты (без сплошной заливки поверх PNG).
  */
 export function ScanningBackdrop() {
   const [hidden, setHidden] = useState(false);
@@ -23,22 +23,32 @@ export function ScanningBackdrop() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[center_22%] opacity-[0.13] blur-[1.5px] contrast-[1.05] saturate-[1.05]"
-          onError={() => setHidden(true)}
+          className="object-cover object-[center_28%] opacity-[0.42] saturate-[1.08]"
+          onError={(e) => {
+            console.warn(
+              "Scanning backdrop image failed:",
+              ASSETS.robot.scanning,
+              e
+            );
+            setHidden(true);
+          }}
         />
       ) : null}
 
-      <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)] via-[var(--bg-primary)]/70 to-[var(--bg-primary)]" />
-
+      {/* Виньетка по краям — центр остаётся открытым, робот читается */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 75% 58% at 50% 30%, transparent 0%, var(--bg-primary) 78%)",
+            "radial-gradient(ellipse 95% 90% at 50% 36%, transparent 18%, rgba(10, 14, 26, 0.65) 62%, var(--bg-primary) 98%)",
         }}
       />
 
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[var(--bg-primary)] to-transparent opacity-95" />
+      {/* Низ: под список шагов и прогресс */}
+      <div className="absolute inset-x-0 bottom-0 h-[48%] bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/88 to-transparent" />
+
+      {/* Верх: лёгкая подложка под центральный радар (чуть контраста) */}
+      <div className="absolute inset-x-0 top-0 h-[28%] bg-gradient-to-b from-[var(--bg-primary)]/55 to-transparent" />
     </div>
   );
 }
