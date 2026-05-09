@@ -12,11 +12,11 @@ export function checkRateLimit(ip: string): boolean {
   recentRequests.set(ip, now);
 
   if (recentRequests.size > 1000) {
-    for (const [key, time] of recentRequests.entries()) {
+    recentRequests.forEach((time, key) => {
       if (now - time > COOLDOWN_MS) {
         recentRequests.delete(key);
       }
-    }
+    });
   }
 
   return true;
