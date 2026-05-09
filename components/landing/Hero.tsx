@@ -1,10 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import { motion } from "framer-motion";
-
-import { BRAND, HERO_ROBOT_IMAGE, SITES_SCANNED_DISPLAY } from "@/lib/brand";
-import { cn } from "@/lib/utils";
+import { HeroRobot } from "@/components/shared/HeroRobot";
+import { BRAND, SITES_SCANNED_DISPLAY } from "@/lib/brand";
 import { UrlForm } from "@/components/landing/UrlForm";
 import { Reveal } from "@/components/landing/motion";
 
@@ -17,33 +14,12 @@ export function Hero() {
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:gap-16">
-          <div className="flex w-full flex-col items-center lg:order-2 lg:w-[480px] lg:max-w-[48%]">
-            <motion.div
-              className="relative w-[280px] shrink-0 sm:w-[320px] lg:w-[480px]"
-              animate={{ y: [0, -5, 0] }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              <Image
-                src={HERO_ROBOT_IMAGE}
-                alt={`${BRAND.name} — AI-диагност сайтов`}
-                width={520}
-                height={520}
-                className={cn(
-                  "h-auto w-full max-w-[520px] rounded-2xl object-contain drop-shadow-2xl",
-                  "robot-glow"
-                )}
-                priority
-                sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 520px"
-              />
-            </motion.div>
-            <p className="mt-3 text-center text-sm text-[var(--text-muted)] lg:mt-4">
-              Сегодня уже осмотрено:{" "}
-              <span className="font-semibold text-[var(--text-secondary)]">
-                {SITES_SCANNED_DISPLAY}
+          <div className="flex w-full flex-col items-center lg:order-2 lg:w-[520px] lg:max-w-[48%]">
+            <HeroRobot />
+            <p className="mt-4 text-center text-sm text-[var(--text-muted)] lg:mt-4">
+              Сегодня осмотрено:{" "}
+              <span className="font-mono font-medium text-[var(--text-primary)]">
+                {SITES_SCANNED_DISPLAY.toLocaleString("ru-RU")}
               </span>{" "}
               сайтов
             </p>
@@ -57,14 +33,14 @@ export function Hero() {
               >
                 Узнайте, почему ваш сайт теряет клиентов
               </h1>
-              <p className="mt-5 max-w-xl text-[19px] leading-relaxed text-[var(--text-secondary)] lg:mx-0 mx-auto">
+              <p className="mx-auto mt-5 max-w-xl text-[19px] leading-relaxed text-[var(--text-secondary)] lg:mx-0">
                 Введите адрес сайта — за 60 секунд получите диагноз: что отпугивает
                 посетителей, где ломается доверие и что переписать в первую очередь.
               </p>
             </Reveal>
             <Reveal delay={0.08} className="mt-8">
               <UrlForm
-                className="max-w-xl lg:mx-0 mx-auto lg:mr-auto"
+                className="mx-auto max-w-xl lg:mx-0 lg:mr-auto"
                 centerMicroOnMobile
               />
             </Reveal>

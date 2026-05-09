@@ -6,7 +6,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { BRAND } from "@/lib/brand";
 import { Reveal } from "@/components/landing/motion";
 
 const faqItems = [
@@ -19,16 +18,16 @@ const faqItems = [
     a: "SEO-аудит проверяет, видит ли вас Google. Мы проверяем другое — понимает ли вас клиент, который уже зашёл на сайт. Это разные вещи, и обычно проблема именно во втором: люди приходят, но не покупают.",
   },
   {
-    q: "Что входит в платный отчёт за 1490 ₽?",
+    q: "Что входит в полный отчёт?",
     a: "Полный разбор главной страницы, готовые тексты для главного экрана и кнопок, рекомендации по структуре, SEO-заголовок, мета-описание. Всё в одном PDF, который можно отдать дизайнеру или сделать самому.",
   },
   {
     q: "А вы можете переделать сайт целиком?",
-    a: `Да. Если после диагноза вы поймёте, что проще не чинить, а переделать — напишите, обсудим. Это уже отдельная услуга, делаем в студии ${BRAND.parentBrand}.`,
+    a: "Да. Если после диагноза вы поймёте, что проще не чинить, а переделать — напишите, обсудим. Это уже отдельная услуга.",
   },
   {
     q: "Какие сайты вы можете проверить?",
-    a: "Любые публичные сайты на любом конструкторе: Tilda, WordPress, Bitrix, Webflow, самописные. Главное — чтобы сайт был доступен по ссылке.",
+    a: "Любые публичные сайты на любом конструкторе: Tilda, WordPress, Webflow, Squarespace, Wix, самописные. Главное — чтобы сайт был доступен по ссылке.",
   },
   {
     q: "Сколько ждать результата?",
@@ -59,7 +58,7 @@ export function Faq() {
               <AccordionItem
                 key={item.q}
                 value={`item-${i}`}
-                className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] px-6 py-4 shadow-card"
+                className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] p-6 shadow-card"
               >
                 <AccordionTrigger className="py-0 hover:no-underline">
                   {item.q}

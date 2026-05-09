@@ -49,12 +49,12 @@
 
 @layer utilities {
   .robot-glow {
-    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.12))
-      drop-shadow(0 0 60px rgba(0, 212, 255, 0.15));
+    filter: drop-shadow(0 0 80px rgba(0, 184, 217, 0.18));
   }
 
   .font-mono-data {
     font-family: var(--font-jetbrains), ui-monospace, monospace;
+    font-weight: 500;
   }
 
   .text-glow-cyan {
@@ -63,6 +63,63 @@
 
   .text-glow-red {
     text-shadow: 0 0 20px rgba(255, 59, 92, 0.5);
+  }
+
+  .robot-hero-container {
+    animation: float-gentle 6s ease-in-out infinite;
+  }
+
+  .scanning-robot {
+    filter: drop-shadow(0 0 60px rgba(0, 212, 255, 0.4));
+    animation: scan-pulse 3s ease-in-out infinite;
+  }
+
+  .scanning-ring {
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 50%;
+    animation: ring-rotate 8s linear infinite;
+  }
+
+  .scanning-ring::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    box-shadow: 0 0 16px var(--accent-primary);
+    transform: translateX(-50%);
+  }
+
+  @keyframes float-gentle {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes scan-pulse {
+    0%,
+    100% {
+      filter: drop-shadow(0 0 60px rgba(0, 212, 255, 0.4));
+    }
+    50% {
+      filter: drop-shadow(0 0 100px rgba(0, 212, 255, 0.7));
+    }
+  }
+
+  @keyframes ring-rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   @keyframes scan-move {

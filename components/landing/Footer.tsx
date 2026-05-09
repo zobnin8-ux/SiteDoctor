@@ -46,7 +46,7 @@ export function Footer() {
               {BRAND.parentBrand}
             </a>
           </p>
-          <p className="mt-1">© {new Date().getFullYear()}</p>
+          <p className="mt-1">© 2026</p>
         </div>
       </div>
     </footer>

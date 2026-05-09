@@ -16,16 +16,13 @@ const steps = [
   {
     n: "3",
     title: "Получаете диагноз через минуту",
-    text: "Бесплатная версия — три главные проблемы. Полный отчёт с готовыми текстами — 1490 ₽.",
+    text: "Бесплатная версия — три главные проблемы. Полный отчёт с готовыми текстами — по запросу.",
   },
 ] as const;
 
 export function HowItWorks() {
   return (
-    <section
-      className="py-16 lg:py-24"
-      aria-labelledby="how-heading"
-    >
+    <section className="py-16 lg:py-24" aria-labelledby="how-heading">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <h2
