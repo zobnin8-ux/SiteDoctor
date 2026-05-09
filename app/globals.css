@@ -52,6 +52,10 @@
     filter: drop-shadow(0 0 80px rgba(0, 184, 217, 0.18));
   }
 
+  .report-robot-glow {
+    filter: drop-shadow(0 0 32px rgba(0, 184, 217, 0.22));
+  }
+
   .font-mono-data {
     font-family: var(--font-jetbrains), ui-monospace, monospace;
     font-weight: 500;

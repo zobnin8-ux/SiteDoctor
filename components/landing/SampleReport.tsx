@@ -34,6 +34,13 @@ export function SampleReport() {
               height={1000}
               className="h-auto w-full"
               sizes="(max-width: 1152px) 100vw, 1152px"
+              onError={(e) => {
+                console.warn(
+                  "Sample report background failed to load:",
+                  ASSETS.sample.reportBg,
+                  e
+                );
+              }}
             />
             <div
               className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(10,14,26,0.4)]"

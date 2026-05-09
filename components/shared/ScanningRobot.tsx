@@ -38,7 +38,14 @@ export function ScanningRobot({ className }: { className?: string }) {
         height={320}
         className="scanning-robot relative z-[1] mx-auto h-full w-full object-contain"
         priority
-        onError={() => setImageError(true)}
+        onError={(e) => {
+          console.warn(
+            "Scanning robot image failed to load:",
+            ASSETS.robot.scanning,
+            e
+          );
+          setImageError(true);
+        }}
       />
     </div>
   );

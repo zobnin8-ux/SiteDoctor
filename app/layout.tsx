@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Unbounded } from "next/font/google";
 
 import { ASSETS } from "@/lib/assets";
 import { BRAND } from "@/lib/brand";
+import { getSiteUrl } from "@/lib/site";
 
 import "./globals.css";
 
@@ -27,6 +28,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: `${BRAND.name} — узнайте, почему ваш сайт теряет клиентов`,
   description:
     "Бесплатная AI-диагностика сайта за 60 секунд. Покажем, что отпугивает посетителей и что переписать в первую очередь.",

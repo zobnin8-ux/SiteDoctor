@@ -23,7 +23,10 @@ export function HeroRobot() {
         priority
         className="robot-glow h-auto w-full max-w-[520px] object-contain"
         sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 520px"
-        onError={() => setImageError(true)}
+        onError={(e) => {
+          console.warn("Hero robot image failed to load:", ASSETS.robot.hero, e);
+          setImageError(true);
+        }}
       />
     </div>
   );

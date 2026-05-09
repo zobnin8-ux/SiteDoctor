@@ -22,8 +22,15 @@ export function ReportHero() {
               alt=""
               width={200}
               height={200}
-              className="object-contain"
-              onError={() => setErr(true)}
+              className="report-robot-glow object-contain"
+              onError={(e) => {
+                console.warn(
+                  "Report robot image failed to load:",
+                  ASSETS.robot.report,
+                  e
+                );
+                setErr(true);
+              }}
             />
           )}
         </div>
