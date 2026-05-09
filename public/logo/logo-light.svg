@@ -1,0 +1,6 @@
+<!-- TODO: 70<5=8BL =0 D8=0;L=K9 wordmark -->
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="40" viewBox="0 0 160 40" fill="none" aria-hidden="true">
+  <circle cx="20" cy="20" r="16" stroke="#0A0E1A" stroke-width="1.5"/>
+  <path d="M12 20h6l2-4 2 8 2-6h6" stroke="#0A0E1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="44" y="26" font-family="system-ui,sans-serif" font-size="15" font-weight="600" fill="#0A0E1A">Site Doctor</text>
+</svg>

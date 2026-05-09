@@ -1,0 +1,22 @@
+<!-- TODO: Replace with final art. Hero uses PNG refs: hero-robot-ref-a.png / hero-robot-ref-b.png (see lib/brand HERO_ROBOT_IMAGE). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 480 480" fill="none" aria-hidden="true">
+  <rect width="480" height="480" rx="32" fill="#F4F2ED"/>
+  <ellipse cx="240" cy="400" rx="140" ry="28" fill="#E8E5DE" opacity="0.7"/>
+  <g transform="translate(120 72)">
+    <rect x="40" y="56" width="160" height="200" rx="48" fill="#FFFFFF" stroke="#E8E5DE" stroke-width="3"/>
+    <rect x="72" y="96" width="96" height="64" rx="20" fill="#4FD1C5" opacity="0.25"/>
+    <circle cx="100" cy="128" r="10" fill="#1A1A1A"/>
+    <circle cx="140" cy="128" r="10" fill="#1A1A1A"/>
+    <path d="M96 168c12 16 36 16 48 0" stroke="#1A1A1A" stroke-width="4" stroke-linecap="round"/>
+    <rect x="100" y="40" width="80" height="36" rx="12" fill="#E53E3E"/>
+    <rect x="108" y="48" width="64" height="8" rx="4" fill="#FFFFFF" opacity="0.9"/>
+    <rect x="-8" y="120" width="56" height="24" rx="12" fill="#FFFFFF" stroke="#E8E5DE" stroke-width="3"/>
+    <rect x="192" y="120" width="56" height="24" rx="12" fill="#FFFFFF" stroke="#E8E5DE" stroke-width="3"/>
+    <path d="M120 256v72c0 24 48 24 48 0v-72" fill="#FFFFFF" stroke="#E8E5DE" stroke-width="3"/>
+    <rect x="88" y="264" width="112" height="120" rx="36" fill="#FFFFFF" stroke="#E8E5DE" stroke-width="3"/>
+    <rect x="108" y="288" width="72" height="72" rx="20" fill="#4FD1C5" opacity="0.2"/>
+    <circle cx="132" cy="312" r="6" fill="#DD6B20"/>
+    <circle cx="168" cy="336" r="6" fill="#38A169"/>
+    <circle cx="156" cy="300" r="6" fill="#E53E3E"/>
+  </g>
+</svg>
