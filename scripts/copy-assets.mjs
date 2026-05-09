@@ -1,6 +1,9 @@
 /**
  * Копирует PNG из assets/ в public/ с именами из ТЗ (кириллица в имени файла).
  * Запуск: node scripts/copy-assets.mjs
+ *
+ * Ищем исходник в assets/ по подстроке времени (globHint). Один и тот же hint
+ * может копироваться в два dest (например 09_22_12 → robot + sample).
  */
 import fs from "fs";
 import path from "path";
@@ -11,11 +14,11 @@ const root = path.join(__dirname, "..");
 const assetsDir = path.join(root, "assets");
 
 const targets = [
-  { globHint: "09_36_21", dest: "public/robot/ChatGPT_Image_9_мая_2026_г___09_36_21.png" },
-  { globHint: "09_28_40", dest: "public/robot/ChatGPT_Image_9_мая_2026_г___09_28_40.png" },
+  { globHint: "09_37_47", dest: "public/robot/ChatGPT_Image_9_мая_2026_г___09_37_47.png" },
   { globHint: "09_22_04", dest: "public/robot/ChatGPT_Image_9_мая_2026_г___09_22_04.png" },
+  { globHint: "09_22_12", dest: "public/robot/ChatGPT_Image_9_мая_2026_г___09_22_12.png" },
   { globHint: "09_22_12", dest: "public/sample/ChatGPT_Image_9_мая_2026_г___09_22_12.png" },
-  { globHint: "09_26_46", dest: "public/og/ChatGPT_Image_9_мая_2026_г___09_26_46.png" },
+  { globHint: "09_49_25", dest: "public/og/ChatGPT_Image_9_мая_2026_г___09_49_25.png" },
 ];
 
 function findSource(hint) {
