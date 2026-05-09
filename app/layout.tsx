@@ -27,6 +27,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+/** Иконка вкладки: `app/icon.svg` (робот Site Doctor). */
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: `${BRAND.name} — узнайте, почему ваш сайт теряет клиентов`,
@@ -50,9 +51,6 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     images: [ASSETS.og.image],
-  },
-  icons: {
-    icon: [{ url: "/logo/icon.svg", type: "image/svg+xml" }],
   },
 };
 
