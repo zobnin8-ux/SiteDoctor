@@ -1,7 +1,6 @@
 "use client";
 
 import { SAMPLE_REPORT } from "@/lib/sample-report";
-import { cn } from "@/lib/utils";
 
 function StatusIcon({
   status,

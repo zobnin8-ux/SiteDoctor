@@ -1,7 +1,7 @@
 "use client";
 
 import { HeroRobot } from "@/components/shared/HeroRobot";
-import { BRAND, SITES_SCANNED_DISPLAY } from "@/lib/brand";
+import { SITES_SCANNED_DISPLAY } from "@/lib/brand";
 import { UrlForm } from "@/components/landing/UrlForm";
 import { Reveal } from "@/components/landing/motion";
 
