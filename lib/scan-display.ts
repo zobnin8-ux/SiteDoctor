@@ -17,6 +17,14 @@ export type ScanStatusDb =
   | "ready"
   | "failed";
 
+/** Нормализация `error_message` из БД для показа пользователю. */
+export function scanErrorMessageForUi(raw: string | null | undefined): string {
+  if (!raw || raw.trim() === "" || raw === "[object Object]") {
+    return "Ошибка на сервере. Проверьте настройки Supabase или попробуйте позже.";
+  }
+  return raw;
+}
+
 /** Значение `completedSteps` для `StepsList`: сколько шагов из списка уже пройдено (анимация ✓/⏳). */
 export function scanToCompletedSteps(
   currentStep: string | null,

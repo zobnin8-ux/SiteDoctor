@@ -1,6 +1,13 @@
 import { SAMPLE_REPORT } from "@/lib/sample-report";
 import { cn } from "@/lib/utils";
 
+export type TopIssueVM = {
+  id: string | number;
+  severity: "critical" | "warning";
+  title: string;
+  description: string;
+};
+
 const border: Record<"critical" | "warning", string> = {
   critical: "border-l-[var(--accent-secondary)]",
   warning: "border-l-[var(--accent-warm)]",
@@ -11,7 +18,18 @@ const label: Record<"critical" | "warning", string> = {
   warning: "Важно",
 };
 
-export function TopIssues() {
+type TopIssuesProps = {
+  issues?: TopIssueVM[];
+};
+
+export function TopIssues({
+  issues = SAMPLE_REPORT.topIssues.map((i) => ({
+    id: i.id,
+    severity: i.severity,
+    title: i.title,
+    description: i.description,
+  })),
+}: TopIssuesProps) {
   return (
     <section className="border-t border-[var(--border)] bg-[var(--bg-secondary)]/30 py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -19,9 +37,9 @@ export function TopIssues() {
           Top issues
         </h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
-          {SAMPLE_REPORT.topIssues.map((issue) => (
+          {issues.map((issue) => (
             <article
-              key={issue.id}
+              key={String(issue.id)}
               className={cn(
                 "rounded-xl border border-[var(--border)] bg-[var(--bg-primary)] p-6",
                 "border-l-4",

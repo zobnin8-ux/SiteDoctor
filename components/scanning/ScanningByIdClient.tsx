@@ -8,6 +8,7 @@ import { ScanningBackdrop } from "@/components/scanning/ScanningBackdrop";
 import { ScanningProgress } from "@/components/scanning/ScanningProgress";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import {
+  scanErrorMessageForUi,
   scanToCompletedSteps,
   type ScanStatusDb,
 } from "@/lib/scan-display";
@@ -21,13 +22,6 @@ type ScanRow = {
   current_step: string | null;
   error_message: string | null;
 };
-
-function scanErrorForUi(raw: string | null | undefined): string {
-  if (!raw || raw.trim() === "" || raw === "[object Object]") {
-    return "Ошибка на сервере. Проверьте настройки Supabase или попробуйте позже.";
-  }
-  return raw;
-}
 
 function hostnameOnly(url: string): string {
   try {
@@ -74,7 +68,7 @@ export function ScanningByIdClient() {
         router.push(`/report/${scanId}`);
       } else if (row.status === "failed") {
         setError(
-          scanErrorForUi(row.error_message) ||
+          scanErrorMessageForUi(row.error_message) ||
             "Не удалось проанализировать сайт"
         );
       }
@@ -101,7 +95,7 @@ export function ScanningByIdClient() {
             setTimeout(() => router.push(`/report/${scanId}`), 800);
           } else if (updated.status === "failed") {
             setError(
-              scanErrorForUi(updated.error_message) ||
+              scanErrorMessageForUi(updated.error_message) ||
                 "Не удалось проанализировать сайт"
             );
           }

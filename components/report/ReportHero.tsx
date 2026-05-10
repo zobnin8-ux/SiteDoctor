@@ -7,7 +7,15 @@ import { RobotPlaceholder } from "@/components/shared/RobotPlaceholder";
 import { ASSETS } from "@/lib/assets";
 import { SAMPLE_REPORT } from "@/lib/sample-report";
 
-export function ReportHero() {
+type ReportHeroProps = {
+  patient?: string;
+  date?: string;
+};
+
+export function ReportHero({
+  patient = SAMPLE_REPORT.patient,
+  date = SAMPLE_REPORT.date,
+}: ReportHeroProps) {
   const [err, setErr] = useState(false);
 
   return (
@@ -39,10 +47,10 @@ export function ReportHero() {
             PATIENT · DIAGNOSTIC REPORT
           </p>
           <p className="mt-2 font-display text-xl font-semibold text-[var(--text-primary)] sm:text-2xl">
-            {SAMPLE_REPORT.patient}
+            {patient}
           </p>
           <p className="mt-2 text-sm text-[var(--text-muted)]">
-            Диагностика завершена · {SAMPLE_REPORT.date}
+            Диагностика завершена · {date}
           </p>
           <p className="mt-4 text-sm italic text-[var(--text-secondary)]">
             Dr. Site Doctor

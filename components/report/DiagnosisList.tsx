@@ -1,6 +1,13 @@
 "use client";
 
+import type { DiagnosisStatus } from "@/lib/scan-report";
 import { SAMPLE_REPORT } from "@/lib/sample-report";
+
+export type DiagnosisRowVM = {
+  id: string | number;
+  label: string;
+  status: DiagnosisStatus;
+};
 
 function StatusIcon({
   status,
@@ -42,16 +49,28 @@ function statusLabel(status: "critical" | "warning" | "ok") {
   return "OK";
 }
 
-export function DiagnosisList({ className }: { className?: string }) {
+type DiagnosisListProps = {
+  className?: string;
+  rows?: DiagnosisRowVM[];
+};
+
+export function DiagnosisList({
+  className,
+  rows = SAMPLE_REPORT.diagnosis.map((r) => ({
+    id: r.id,
+    label: r.label,
+    status: r.status,
+  })),
+}: DiagnosisListProps) {
   return (
     <div className={className}>
       <p className="font-mono-data text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">
         Diagnosis
       </p>
       <ul className="mt-4 space-y-3">
-        {SAMPLE_REPORT.diagnosis.map((row) => (
+        {rows.map((row) => (
           <li
-            key={row.id}
+            key={String(row.id)}
             className="flex items-center gap-3 text-sm text-[var(--text-primary)]"
           >
             <StatusIcon status={row.status} />

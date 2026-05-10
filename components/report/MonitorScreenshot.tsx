@@ -5,7 +5,73 @@ import Image from "next/image";
 import { ScanningOverlay } from "@/components/shared/ScanningOverlay";
 import { SAMPLE_REPORT } from "@/lib/sample-report";
 
-export function MonitorScreenshot() {
+type MonitorScreenshotProps = {
+  patient?: string;
+  desktopUrl?: string | null;
+  mobileUrl?: string | null;
+};
+
+export function MonitorScreenshot({
+  patient = SAMPLE_REPORT.patient,
+  desktopUrl,
+  mobileUrl,
+}: MonitorScreenshotProps) {
+  const hasLive =
+    typeof desktopUrl === "string" &&
+    desktopUrl.length > 0 &&
+    typeof mobileUrl === "string" &&
+    mobileUrl.length > 0;
+
+  if (hasLive) {
+    return (
+      <div className="relative">
+        <span
+          className="pointer-events-none absolute -left-1 -top-1 z-[2] h-4 w-4 border-l-2 border-t-2 border-[var(--accent-primary)]"
+          aria-hidden
+        />
+        <span
+          className="pointer-events-none absolute -right-1 -top-1 z-[2] h-4 w-4 border-r-2 border-t-2 border-[var(--accent-primary)]"
+          aria-hidden
+        />
+        <span
+          className="pointer-events-none absolute -bottom-1 -left-1 z-[2] h-4 w-4 border-b-2 border-l-2 border-[var(--accent-primary)]"
+          aria-hidden
+        />
+        <span
+          className="pointer-events-none absolute -bottom-1 -right-1 z-[2] h-4 w-4 border-b-2 border-r-2 border-[var(--accent-primary)]"
+          aria-hidden
+        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <figure className="overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--bg-tertiary)]">
+            {/* eslint-disable-next-line @next/next/no-img-element -- внешний URL Storage */}
+            <img
+              src={desktopUrl!}
+              alt="Скриншот главной — десктоп"
+              className="h-auto w-full object-cover object-top"
+            />
+            <figcaption className="border-t border-[var(--border)] px-3 py-2 font-mono-data text-[10px] text-[var(--text-muted)]">
+              Desktop · viewport
+            </figcaption>
+          </figure>
+          <figure className="overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--bg-tertiary)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={mobileUrl!}
+              alt="Скриншот главной — мобильная версия"
+              className="h-auto w-full object-cover object-top"
+            />
+            <figcaption className="border-t border-[var(--border)] px-3 py-2 font-mono-data text-[10px] text-[var(--text-muted)]">
+              Mobile · viewport
+            </figcaption>
+          </figure>
+        </div>
+        <p className="mt-3 font-mono-data text-xs text-[var(--text-muted)]">
+          PATIENT: {patient}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
       <span
@@ -37,7 +103,7 @@ export function MonitorScreenshot() {
         <div className="absolute inset-0 backdrop-blur-[1px]" aria-hidden />
       </div>
       <p className="mt-3 font-mono-data text-xs text-[var(--text-muted)]">
-        PATIENT: {SAMPLE_REPORT.patient}
+        PATIENT: {patient}
       </p>
     </div>
   );

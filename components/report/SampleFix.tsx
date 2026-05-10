@@ -1,7 +1,15 @@
 import { SAMPLE_REPORT } from "@/lib/sample-report";
 import { cn } from "@/lib/utils";
 
-export function SampleFix() {
+type SampleFixProps = {
+  before?: string;
+  after?: string;
+};
+
+export function SampleFix({
+  before = SAMPLE_REPORT.sampleFix.before,
+  after = SAMPLE_REPORT.sampleFix.after,
+}: SampleFixProps) {
   return (
     <section className="py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -14,7 +22,7 @@ export function SampleFix() {
               Было
             </p>
             <p className="mt-3 text-[17px] italic text-[var(--text-secondary)]">
-              «{SAMPLE_REPORT.sampleFix.before}»
+              «{before}»
             </p>
           </div>
           <div
@@ -27,7 +35,7 @@ export function SampleFix() {
               Стало
             </p>
             <p className="mt-3 text-[17px] font-medium leading-relaxed text-[var(--text-primary)]">
-              «{SAMPLE_REPORT.sampleFix.after}»
+              «{after}»
             </p>
           </div>
         </div>

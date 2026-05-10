@@ -3,7 +3,15 @@
 import { ScoreNumber } from "@/components/shared/ScoreNumber";
 import { SAMPLE_REPORT } from "@/lib/sample-report";
 
-export function OverallScoreBlock() {
+type OverallScoreBlockProps = {
+  score?: number;
+  scoreVerdict?: string;
+};
+
+export function OverallScoreBlock({
+  score = SAMPLE_REPORT.score,
+  scoreVerdict = SAMPLE_REPORT.scoreVerdict,
+}: OverallScoreBlockProps) {
   return (
     <div>
       <p className="font-mono-data text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">
@@ -12,7 +20,7 @@ export function OverallScoreBlock() {
       <div className="mt-2 flex flex-wrap items-end gap-2">
         <ScoreNumber
           from={100}
-          to={SAMPLE_REPORT.score}
+          to={score}
           durationMs={1000}
           className="text-[64px] font-semibold leading-none sm:text-[80px] md:text-[96px]"
           glow="red"
@@ -22,7 +30,7 @@ export function OverallScoreBlock() {
         </span>
       </div>
       <p className="mt-3 text-sm text-[var(--text-secondary)]">
-        {SAMPLE_REPORT.scoreVerdict}
+        {scoreVerdict}
       </p>
     </div>
   );
