@@ -47,8 +47,11 @@ async function collectSnapshot(
   await page.waitForLoadState("load", { timeout: 15_000 }).catch(() => undefined);
 
   const title = (await page.title()).trim();
+  const metaDesc = page.locator('meta[name="description"]');
   const description =
-    (await page.locator('meta[name="description"]').getAttribute("content"))?.trim() ?? null;
+    (await metaDesc.count()) > 0
+      ? (await metaDesc.first().getAttribute("content"))?.trim() ?? null
+      : null;
   const h1Raw = await page.locator("h1").allInnerTexts();
   const h1 = h1Raw.map((t) => t.trim()).filter(Boolean);
 
