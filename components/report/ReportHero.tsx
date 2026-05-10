@@ -4,8 +4,9 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { RobotPlaceholder } from "@/components/shared/RobotPlaceholder";
-import { ASSETS } from "@/lib/assets";
 import { SAMPLE_REPORT } from "@/lib/sample-report";
+
+const HERO_LAB_IMAGE = "/report/hero-ai-lab.png";
 
 type ReportHeroProps = {
   patient?: string;
@@ -22,30 +23,26 @@ export function ReportHero({
   industryLabel,
   aiSummary,
 }: ReportHeroProps) {
-  const [err, setErr] = useState(false);
+  const [labErr, setLabErr] = useState(false);
 
   return (
     <section className="border-b border-[var(--border)] bg-[var(--bg-secondary)]/40 py-8 md:py-10">
-      <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 sm:px-6 lg:grid-cols-[200px_1fr] lg:px-8">
-        <div className="hidden justify-center md:flex">
-          {err ? (
-            <RobotPlaceholder size={200} variant="report" />
+      <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 sm:px-6 lg:grid-cols-[minmax(260px,300px)_1fr] lg:px-8">
+        <div className="hidden justify-center md:flex md:justify-start">
+          {labErr ? (
+            <RobotPlaceholder size={240} variant="report" />
           ) : (
-            <Image
-              src={ASSETS.robot.report}
-              alt=""
-              width={200}
-              height={200}
-              className="report-robot-glow object-contain"
-              onError={(e) => {
-                console.warn(
-                  "Report robot image failed to load:",
-                  ASSETS.robot.report,
-                  e
-                );
-                setErr(true);
-              }}
-            />
+            <div className="relative h-[168px] w-[270px] shrink-0 sm:h-[184px] sm:w-[295px]">
+              <Image
+                src={HERO_LAB_IMAGE}
+                alt="Site Doctor AI — диагностика и оптимизация сайта"
+                fill
+                className="object-contain object-left"
+                sizes="(max-width: 640px) 0px, 295px"
+                priority
+                onError={() => setLabErr(true)}
+              />
+            </div>
           )}
         </div>
         <div className="text-center md:text-left">
