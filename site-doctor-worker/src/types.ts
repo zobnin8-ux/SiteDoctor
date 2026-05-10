@@ -16,4 +16,6 @@ export interface Scan {
   completed_at: string | null;
   /** Заполняется воркером после скана (этап A). */
   scan_result?: ScanResultV1 | null;
+  desktop_screenshot_url?: string | null;
+  mobile_screenshot_url?: string | null;
 }

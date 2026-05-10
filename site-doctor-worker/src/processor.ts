@@ -1,7 +1,8 @@
 import { formatError } from "./errors.js";
-import { supabase } from "./supabase.js";
 import { runPlaywrightScan } from "./playwright-scan.js";
 import { buildScanResultFailed, buildScanResultSuccess } from "./scan-result.js";
+import { supabase } from "./supabase.js";
+import { uploadScanScreenshots } from "./storage-screenshots.js";
 import type { Scan } from "./types.js";
 
 export async function processScan(scan: Scan): Promise<void> {
@@ -46,6 +47,21 @@ export async function processScan(scan: Scan): Promise<void> {
 
     const result = await runPlaywrightScan(targetUrl, pushProgress);
 
+    let desktopShotUrl: string | null = null;
+    let mobileShotUrl: string | null = null;
+    try {
+      const urls = await uploadScanScreenshots(
+        scan.id,
+        result.screenshots.desktopPng,
+        result.screenshots.mobilePng
+      );
+      desktopShotUrl = urls.desktopUrl;
+      mobileShotUrl = urls.mobileUrl;
+      console.log(`[${scan.id}] Screenshots uploaded`);
+    } catch (uploadErr) {
+      console.error(`[${scan.id}] Screenshot upload failed:`, uploadErr);
+    }
+
     const summary = [
       `Desktop title: ${result.desktop.title.slice(0, 120)}`,
       `Mobile title: ${result.mobile.title.slice(0, 120)}`,
@@ -59,7 +75,10 @@ export async function processScan(scan: Scan): Promise<void> {
 
     console.log(`[${scan.id}] Scan summary:\n${summary}`);
 
-    const scanResult = buildScanResultSuccess(targetUrl, result);
+    const scanResult = buildScanResultSuccess(targetUrl, result, {
+      desktopUrl: desktopShotUrl,
+      mobileUrl: mobileShotUrl,
+    });
 
     await supabase
       .from("scans")
@@ -69,6 +88,8 @@ export async function processScan(scan: Scan): Promise<void> {
         current_step: "Готово",
         completed_at: new Date().toISOString(),
         scan_result: scanResult,
+        desktop_screenshot_url: desktopShotUrl,
+        mobile_screenshot_url: mobileShotUrl,
       })
       .eq("id", scan.id);
 

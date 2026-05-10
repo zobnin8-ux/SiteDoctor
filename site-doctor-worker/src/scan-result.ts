@@ -22,6 +22,8 @@ export type ScanResultV1 =
       desktop: ScanResultSnapshotJson;
       mobile: ScanResultSnapshotJson;
       trust_notes: string[];
+      desktop_screenshot_url?: string | null;
+      mobile_screenshot_url?: string | null;
     }
   | {
       version: typeof SCAN_RESULT_VERSION;
@@ -45,7 +47,8 @@ function snapshotToJson(s: ScanPageSnapshot): ScanResultSnapshotJson {
 
 export function buildScanResultSuccess(
   inputUrl: string,
-  result: PlaywrightScanResult
+  result: PlaywrightScanResult,
+  screenshotUrls?: { desktopUrl: string | null; mobileUrl: string | null }
 ): ScanResultV1 {
   return {
     version: SCAN_RESULT_VERSION,
@@ -55,6 +58,8 @@ export function buildScanResultSuccess(
     desktop: snapshotToJson(result.desktop),
     mobile: snapshotToJson(result.mobile),
     trust_notes: result.trustNotes,
+    desktop_screenshot_url: screenshotUrls?.desktopUrl ?? null,
+    mobile_screenshot_url: screenshotUrls?.mobileUrl ?? null,
   };
 }
 

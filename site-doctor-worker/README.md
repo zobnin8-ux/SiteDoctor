@@ -20,6 +20,7 @@ Listens to Supabase Realtime for new scans and processes them.
 
 - `SUPABASE_URL` — Supabase project URL (without `/rest/v1/`)
 - `SUPABASE_SERVICE_ROLE_KEY` — ключ **`service_role`** из вкладки **Legacy anon, service_role API keys** в Supabase (JWT вида `eyJ…`, три части через точку). Новые ключи **`sb_secret_…`** для PostgREST часто дают **`PGRST301`** — их сюда не кладите.
+- `SCAN_SCREENSHOTS_BUCKET` (optional) — имя bucket в Supabase Storage, по умолчанию **`scan-screenshots`**.
 
 ## Deploy (Railway)
 
@@ -36,3 +37,13 @@ Listens to Supabase Realtime for new scans and processes them.
 `supabase/migrations/20260109180000_add_scan_result_to_scans.sql`
 
 Без неё воркер не сможет записать JSON и PostgREST вернёт ошибку на `update` с неизвестной колонкой.
+
+## Скриншоты (Storage)
+
+Один раз выполни в **Supabase → SQL** миграцию:
+
+`supabase/migrations/20260110120000_scan_screenshots_storage.sql`
+
+Она создаёт публичный bucket **`scan-screenshots`**, чтение для всех, запись только с **`service_role`**. Воркер кладёт PNG по путям `{scan_id}/desktop.png` и `{scan_id}/mobile.png`, публичные URL пишет в **`scans.desktop_screenshot_url`** / **`mobile_screenshot_url`** и в **`scan_result`**.
+
+Если загрузка упадёт по правам — проверь политики **Storage** для bucket или JWT воркера.

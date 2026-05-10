@@ -22,6 +22,11 @@ export type PlaywrightScanResult = {
   desktop: ScanPageSnapshot;
   mobile: ScanPageSnapshot;
   trustNotes: string[];
+  /** PNG viewport screenshots (доказательство реального открытия страницы). */
+  screenshots: {
+    desktopPng: Buffer;
+    mobilePng: Buffer;
+  };
 };
 
 async function collectSnapshot(
@@ -137,6 +142,13 @@ export async function runPlaywrightScan(
     });
     const desktopPage = await desktopContext.newPage();
     const desktop = await collectSnapshot(desktopPage, url);
+    const desktopPng = Buffer.from(
+      await desktopPage.screenshot({
+        type: "png",
+        fullPage: false,
+        animations: "disabled",
+      })
+    );
     await desktopContext.close();
 
     await onProgress({
@@ -159,6 +171,13 @@ export async function runPlaywrightScan(
     });
     const mobilePage = await mobileContext.newPage();
     const mobile = await collectSnapshot(mobilePage, url);
+    const mobilePng = Buffer.from(
+      await mobilePage.screenshot({
+        type: "png",
+        fullPage: false,
+        animations: "disabled",
+      })
+    );
     await mobileContext.close();
 
     await onProgress({
@@ -187,7 +206,12 @@ export async function runPlaywrightScan(
       progress: 90,
     });
 
-    return { desktop, mobile, trustNotes };
+    return {
+      desktop,
+      mobile,
+      trustNotes,
+      screenshots: { desktopPng, mobilePng },
+    };
   } finally {
     await browser.close();
   }
