@@ -1,6 +1,7 @@
 import { formatError } from "./errors.js";
 import { supabase } from "./supabase.js";
 import { runPlaywrightScan } from "./playwright-scan.js";
+import { buildScanResultFailed, buildScanResultSuccess } from "./scan-result.js";
 import type { Scan } from "./types.js";
 
 export async function processScan(scan: Scan): Promise<void> {
@@ -58,6 +59,8 @@ export async function processScan(scan: Scan): Promise<void> {
 
     console.log(`[${scan.id}] Scan summary:\n${summary}`);
 
+    const scanResult = buildScanResultSuccess(targetUrl, result);
+
     await supabase
       .from("scans")
       .update({
@@ -65,6 +68,7 @@ export async function processScan(scan: Scan): Promise<void> {
         progress: 100,
         current_step: "Готово",
         completed_at: new Date().toISOString(),
+        scan_result: scanResult,
       })
       .eq("id", scan.id);
 
@@ -73,12 +77,15 @@ export async function processScan(scan: Scan): Promise<void> {
     const message = formatError(err);
     console.error(`[${scan.id}] ❌ Failed:`, message, err);
 
+    const failedPayload = buildScanResultFailed(targetUrl, message);
+
     await supabase
       .from("scans")
       .update({
         status: "failed",
         error_message: message,
         completed_at: new Date().toISOString(),
+        scan_result: failedPayload,
       })
       .eq("id", scan.id);
   }

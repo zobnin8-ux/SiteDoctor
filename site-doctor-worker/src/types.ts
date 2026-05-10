@@ -1,3 +1,5 @@
+import type { ScanResultV1 } from "./scan-result.js";
+
 export type ScanStatus = "pending" | "scanning" | "analyzing" | "ready" | "failed";
 
 export interface Scan {
@@ -12,4 +14,6 @@ export interface Scan {
   created_at: string;
   started_at: string | null;
   completed_at: string | null;
+  /** Заполняется воркером после скана (этап A). */
+  scan_result?: ScanResultV1 | null;
 }
