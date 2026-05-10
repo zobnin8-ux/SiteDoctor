@@ -28,7 +28,14 @@ export async function processScan(scan: Scan): Promise<void> {
       step: string;
       progress: number;
     }) => {
-      const { error } = await supabase.from("scans").update(patch).eq("id", scan.id);
+      const { error } = await supabase
+        .from("scans")
+        .update({
+          status: patch.status,
+          progress: patch.progress,
+          current_step: patch.step,
+        })
+        .eq("id", scan.id);
       if (error) {
         console.error(`[${scan.id}] Failed to update progress:`, error);
         throw error;
