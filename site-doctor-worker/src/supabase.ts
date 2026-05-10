@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import ws from "ws";
 
 const url = process.env.SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -14,6 +15,8 @@ export const supabase = createClient(url, serviceKey, {
     persistSession: false,
   },
   realtime: {
+    // Node < 22 has no global WebSocket; pass `ws` (types differ slightly from DOM WebSocket).
+    transport: ws as unknown as import("@supabase/realtime-js").WebSocketLikeConstructor,
     params: {
       eventsPerSecond: 10,
     },

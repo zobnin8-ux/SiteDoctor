@@ -10,12 +10,14 @@
     "dev": "tsx watch src/index.ts"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.0",
+    "@supabase/supabase-js": "^2.55.0",
     "@types/node": "^22.0.0",
-    "typescript": "^5.5.0"
+    "@types/ws": "^8.5.13",
+    "typescript": "^5.5.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "tsx": "^4.7.0"
