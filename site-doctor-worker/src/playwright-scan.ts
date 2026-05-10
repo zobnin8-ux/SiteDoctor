@@ -114,6 +114,34 @@ function buildTrustNotes(d: ScanPageSnapshot, m: ScanPageSnapshot): string[] {
   return notes;
 }
 
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/** Даём странице дорисоваться: сеть, шрифты, lazy-блоки (на десктопе чаще «белый» hero до загрузки). */
+async function preparePageForScreenshot(
+  page: import("playwright").Page
+): Promise<void> {
+  await page
+    .waitForLoadState("networkidle", { timeout: 12_000 })
+    .catch(() => undefined);
+  await page.evaluate(async () => {
+    try {
+      await document.fonts?.ready;
+    } catch {
+      /* ignore */
+    }
+  });
+  await page.evaluate(() => {
+    window.scrollTo(0, Math.min(document.body.scrollHeight, 4000));
+  });
+  await delay(450);
+  await page.evaluate(() => {
+    window.scrollTo(0, 0);
+  });
+  await delay(200);
+}
+
 /** Реальный скан: десктоп → мобильный контекст → короткий разбор сигналов. */
 export async function runPlaywrightScan(
   url: string,
@@ -142,6 +170,7 @@ export async function runPlaywrightScan(
     });
     const desktopPage = await desktopContext.newPage();
     const desktop = await collectSnapshot(desktopPage, url);
+    await preparePageForScreenshot(desktopPage);
     const desktopPng = Buffer.from(
       await desktopPage.screenshot({
         type: "png",
@@ -171,6 +200,7 @@ export async function runPlaywrightScan(
     });
     const mobilePage = await mobileContext.newPage();
     const mobile = await collectSnapshot(mobilePage, url);
+    await preparePageForScreenshot(mobilePage);
     const mobilePng = Buffer.from(
       await mobilePage.screenshot({
         type: "png",
