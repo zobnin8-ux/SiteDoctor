@@ -1,10 +1,8 @@
 [phases.setup]
 nixPkgs = ["nodejs_20"]
 
-# Railway often sets NODE_ENV=production during install; npm would skip devDependencies,
-# so TypeScript (devDependency) is missing and `npm run build` fails.
 [phases.install]
-cmds = ["NODE_ENV=development npm ci"]
+cmds = ["npm ci"]
 
 [phases.build]
 cmds = ["npm run build"]
