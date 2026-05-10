@@ -2,6 +2,7 @@
 
 import type { ReportViewModel } from "@/lib/scan-report";
 
+import { AiUnavailableBanner } from "@/components/report/AiUnavailableBanner";
 import { ReportHeader } from "@/components/report/ReportHeader";
 import { ReportHero } from "@/components/report/ReportHero";
 import { MonitorScreenshot } from "@/components/report/MonitorScreenshot";
@@ -17,13 +18,30 @@ type ScanReportViewProps = {
 };
 
 export function ScanReportView({ model }: ScanReportViewProps) {
+  const subScoresAi =
+    model.reportKind === "ai" && model.subScores
+      ? {
+          trust: model.subScores.trust,
+          cta: model.subScores.cta,
+          clarity: model.subScores.clarity,
+          mobile: model.subScores.mobile,
+          visual: model.subScores.visual,
+        }
+      : undefined;
+
   return (
     <div
       className="dark-zone min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]"
       style={{ backgroundImage: "url(/bg/grid-pattern.svg)" }}
     >
       <ReportHeader />
-      <ReportHero patient={model.hostname} date={model.completedLabel} />
+      {model.aiUnavailableBanner ? <AiUnavailableBanner /> : null}
+      <ReportHero
+        patient={model.hostname}
+        date={model.completedLabel}
+        industryLabel={model.industryLabel}
+        aiSummary={model.aiSummary}
+      />
 
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-[3fr_2fr] md:items-start">
@@ -36,12 +54,15 @@ export function ScanReportView({ model }: ScanReportViewProps) {
             <OverallScoreBlock
               score={model.score}
               scoreVerdict={model.scoreVerdict}
+              subScores={subScoresAi}
             />
             <div
               className="my-8 h-px w-full bg-gradient-to-r from-transparent via-[var(--border-glow)] to-transparent"
               aria-hidden
             />
-            <DiagnosisList rows={model.diagnosis} />
+            {model.reportKind === "heuristic" ? (
+              <DiagnosisList rows={model.diagnosis} />
+            ) : null}
           </div>
         </div>
       </section>

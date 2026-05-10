@@ -3,19 +3,21 @@ import { cn } from "@/lib/utils";
 
 export type TopIssueVM = {
   id: string | number;
-  severity: "critical" | "warning";
+  severity: "critical" | "warning" | "minor";
   title: string;
   description: string;
 };
 
-const border: Record<"critical" | "warning", string> = {
+const border: Record<"critical" | "warning" | "minor", string> = {
   critical: "border-l-[var(--accent-secondary)]",
   warning: "border-l-[var(--accent-warm)]",
+  minor: "border-l-[var(--text-muted)]",
 };
 
-const label: Record<"critical" | "warning", string> = {
+const label: Record<"critical" | "warning" | "minor", string> = {
   critical: "Критично",
   warning: "Важно",
+  minor: "Заметка",
 };
 
 type TopIssuesProps = {
@@ -36,7 +38,7 @@ export function TopIssues({
         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
           Top issues
         </h2>
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {issues.map((issue) => (
             <article
               key={String(issue.id)}

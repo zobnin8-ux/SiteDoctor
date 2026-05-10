@@ -3,14 +3,33 @@
 import { ScoreNumber } from "@/components/shared/ScoreNumber";
 import { SAMPLE_REPORT } from "@/lib/sample-report";
 
+type SubScores = {
+  trust: number;
+  cta: number;
+  clarity: number;
+  mobile: number;
+  visual: number;
+};
+
 type OverallScoreBlockProps = {
   score?: number;
   scoreVerdict?: string;
+  /** Сабскоры AI (пять метрик без дублирования overall в сетке). */
+  subScores?: SubScores;
 };
+
+const SUB_LABELS: { key: keyof SubScores; label: string }[] = [
+  { key: "trust", label: "Доверие" },
+  { key: "cta", label: "CTA" },
+  { key: "clarity", label: "Ясность" },
+  { key: "mobile", label: "Mobile" },
+  { key: "visual", label: "Визуал" },
+];
 
 export function OverallScoreBlock({
   score = SAMPLE_REPORT.score,
   scoreVerdict = SAMPLE_REPORT.scoreVerdict,
+  subScores,
 }: OverallScoreBlockProps) {
   return (
     <div>
@@ -32,6 +51,23 @@ export function OverallScoreBlock({
       <p className="mt-3 text-sm text-[var(--text-secondary)]">
         {scoreVerdict}
       </p>
+      {subScores ? (
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+          {SUB_LABELS.map(({ key, label }) => (
+            <div
+              key={key}
+              className="rounded-lg border border-[var(--border)] bg-[var(--bg-tertiary)] px-3 py-2"
+            >
+              <p className="font-mono-data text-[10px] uppercase text-[var(--text-muted)]">
+                {label}
+              </p>
+              <p className="mt-1 font-mono-data text-lg font-semibold text-[var(--text-primary)]">
+                {subScores[key]}
+              </p>
+            </div>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }

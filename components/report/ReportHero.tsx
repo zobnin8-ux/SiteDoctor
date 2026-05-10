@@ -10,11 +10,17 @@ import { SAMPLE_REPORT } from "@/lib/sample-report";
 type ReportHeroProps = {
   patient?: string;
   date?: string;
+  /** Подпись индустрии (AI). */
+  industryLabel?: string;
+  /** Краткий разбор от AI («доктор»). */
+  aiSummary?: string;
 };
 
 export function ReportHero({
   patient = SAMPLE_REPORT.patient,
   date = SAMPLE_REPORT.date,
+  industryLabel,
+  aiSummary,
 }: ReportHeroProps) {
   const [err, setErr] = useState(false);
 
@@ -46,12 +52,22 @@ export function ReportHero({
           <p className="font-mono-data text-xs uppercase tracking-widest text-[var(--accent-primary)]">
             PATIENT · DIAGNOSTIC REPORT
           </p>
+          {industryLabel ? (
+            <p className="mt-2 font-mono-data text-[10px] uppercase tracking-wide text-[var(--text-muted)]">
+              {industryLabel}
+            </p>
+          ) : null}
           <p className="mt-2 font-display text-xl font-semibold text-[var(--text-primary)] sm:text-2xl">
             {patient}
           </p>
           <p className="mt-2 text-sm text-[var(--text-muted)]">
             Диагностика завершена · {date}
           </p>
+          {aiSummary ? (
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--text-secondary)]">
+              {aiSummary}
+            </p>
+          ) : null}
           <p className="mt-4 text-sm italic text-[var(--text-secondary)]">
             Dr. Site Doctor
           </p>

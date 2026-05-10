@@ -1,6 +1,8 @@
 import type { PlaywrightScanResult, ScanPageSnapshot } from "./playwright-scan.js";
+import type { AiAnalysis } from "./ai-analyzer.js";
 
 export const SCAN_RESULT_VERSION = 1 as const;
+export const SCAN_RESULT_VERSION_V2 = 2 as const;
 
 /** Снимок страницы в JSON для БД (snake_case). */
 export type ScanResultSnapshotJson = {
@@ -13,25 +15,35 @@ export type ScanResultSnapshotJson = {
   contact_link_count: number;
 };
 
-export type ScanResultV1 =
-  | {
-      version: typeof SCAN_RESULT_VERSION;
-      status: "success";
-      scanned_at: string;
-      input_url: string;
-      desktop: ScanResultSnapshotJson;
-      mobile: ScanResultSnapshotJson;
-      trust_notes: string[];
-      desktop_screenshot_url?: string | null;
-      mobile_screenshot_url?: string | null;
-    }
-  | {
-      version: typeof SCAN_RESULT_VERSION;
-      status: "failed";
-      scanned_at: string;
-      input_url: string;
-      error: { message: string };
-    };
+export type ScanResultSuccessV1 = {
+  version: typeof SCAN_RESULT_VERSION;
+  status: "success";
+  scanned_at: string;
+  input_url: string;
+  desktop: ScanResultSnapshotJson;
+  mobile: ScanResultSnapshotJson;
+  trust_notes: string[];
+  desktop_screenshot_url?: string | null;
+  mobile_screenshot_url?: string | null;
+};
+
+export type ScanResultSuccessV2 = Omit<ScanResultSuccessV1, "version"> & {
+  version: typeof SCAN_RESULT_VERSION_V2;
+  ai_failed: boolean;
+  ai_error: string | null;
+  ai_analysis?: AiAnalysis;
+};
+
+export type ScanResultFailed = {
+  version: typeof SCAN_RESULT_VERSION;
+  status: "failed";
+  scanned_at: string;
+  input_url: string;
+  error: { message: string };
+};
+
+/** Payload в колонке `scans.scan_result`. */
+export type ScanResultV1 = ScanResultSuccessV1 | ScanResultSuccessV2 | ScanResultFailed;
 
 function snapshotToJson(s: ScanPageSnapshot): ScanResultSnapshotJson {
   return {
@@ -49,7 +61,7 @@ export function buildScanResultSuccess(
   inputUrl: string,
   result: PlaywrightScanResult,
   screenshotUrls?: { desktopUrl: string | null; mobileUrl: string | null }
-): ScanResultV1 {
+): ScanResultSuccessV1 {
   return {
     version: SCAN_RESULT_VERSION,
     status: "success",
@@ -63,7 +75,7 @@ export function buildScanResultSuccess(
   };
 }
 
-export function buildScanResultFailed(inputUrl: string, message: string): ScanResultV1 {
+export function buildScanResultFailed(inputUrl: string, message: string): ScanResultFailed {
   return {
     version: SCAN_RESULT_VERSION,
     status: "failed",

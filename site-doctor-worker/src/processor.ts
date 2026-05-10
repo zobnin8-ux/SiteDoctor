@@ -1,6 +1,13 @@
+import { analyzeScan } from "./ai-analyzer.js";
 import { formatError } from "./errors.js";
 import { runPlaywrightScan } from "./playwright-scan.js";
-import { buildScanResultFailed, buildScanResultSuccess } from "./scan-result.js";
+import { pageDataFromScanSuccess } from "./scan-mapper.js";
+import {
+  buildScanResultFailed,
+  buildScanResultSuccess,
+  SCAN_RESULT_VERSION_V2,
+  type ScanResultSuccessV2,
+} from "./scan-result.js";
 import { supabase } from "./supabase.js";
 import { uploadScanScreenshots } from "./storage-screenshots.js";
 import type { Scan } from "./types.js";
@@ -75,10 +82,35 @@ export async function processScan(scan: Scan): Promise<void> {
 
     console.log(`[${scan.id}] Scan summary:\n${summary}`);
 
-    const scanResult = buildScanResultSuccess(targetUrl, result, {
+    const scanBase = buildScanResultSuccess(targetUrl, result, {
       desktopUrl: desktopShotUrl,
       mobileUrl: mobileShotUrl,
     });
+
+    await supabase
+      .from("scans")
+      .update({
+        status: "analyzing",
+        progress: 70,
+        current_step: "Формируем диагноз",
+      })
+      .eq("id", scan.id);
+
+    console.log(`[${scan.id}] Calling AI...`);
+
+    const aiResult = await analyzeScan(
+      pageDataFromScanSuccess(scanBase, targetUrl)
+    );
+
+    const finalScanResult: ScanResultSuccessV2 = {
+      ...scanBase,
+      version: SCAN_RESULT_VERSION_V2,
+      ai_failed: !aiResult.ok,
+      ai_error: aiResult.ok ? null : (aiResult.error ?? "Unknown error"),
+      ...(aiResult.ok && aiResult.analysis
+        ? { ai_analysis: aiResult.analysis }
+        : {}),
+    };
 
     await supabase
       .from("scans")
@@ -87,13 +119,17 @@ export async function processScan(scan: Scan): Promise<void> {
         progress: 100,
         current_step: "Готово",
         completed_at: new Date().toISOString(),
-        scan_result: scanResult,
+        scan_result: finalScanResult,
         desktop_screenshot_url: desktopShotUrl,
         mobile_screenshot_url: mobileShotUrl,
       })
       .eq("id", scan.id);
 
-    console.log(`[${scan.id}] ✅ Done`);
+    if (aiResult.ok) {
+      console.log(`[${scan.id}] ✅ Done with AI analysis`);
+    } else {
+      console.warn(`[${scan.id}] ⚠️ Done WITHOUT AI: ${aiResult.error}`);
+    }
   } catch (err) {
     const message = formatError(err);
     console.error(`[${scan.id}] ❌ Failed:`, message, err);
