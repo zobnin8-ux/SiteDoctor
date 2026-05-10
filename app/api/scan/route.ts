@@ -3,8 +3,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { isValidUrl, normalizeUrl } from "@/lib/url-utils";
 
-const RATE_LIMIT_HOURS = 1;
-const MAX_SCANS_PER_IP_PER_HOUR = 5;
+/** Сколько часов смотрим назад при подсчёте (по умолчанию 1). */
+const RATE_LIMIT_HOURS = Math.max(
+  1,
+  Number(process.env.SCAN_RATE_LIMIT_WINDOW_HOURS ?? "1") || 1
+);
+/** Макс. сканов с одного IP за окно. В prod держи умеренным; для теста — больше или отключи лимит. */
+const MAX_SCANS_PER_IP_PER_HOUR = Math.max(
+  0,
+  Number(process.env.MAX_SCANS_PER_IP_PER_HOUR ?? "5") || 5
+);
+const RATE_LIMIT_DISABLED =
+  process.env.SCAN_RATE_LIMIT_DISABLED === "true" ||
+  MAX_SCANS_PER_IP_PER_HOUR === 0;
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,23 +52,25 @@ export async function POST(request: NextRequest) {
       "unknown";
     const userAgent = request.headers.get("user-agent") || "";
 
-    const oneHourAgo = new Date(
-      Date.now() - RATE_LIMIT_HOURS * 60 * 60 * 1000
-    ).toISOString();
+    if (!RATE_LIMIT_DISABLED) {
+      const windowStart = new Date(
+        Date.now() - RATE_LIMIT_HOURS * 60 * 60 * 1000
+      ).toISOString();
 
-    const { count, error: countError } = await supabaseAdmin
-      .from("scans")
-      .select("id", { count: "exact", head: true })
-      .eq("ip_address", ip)
-      .gte("created_at", oneHourAgo);
+      const { count, error: countError } = await supabaseAdmin
+        .from("scans")
+        .select("id", { count: "exact", head: true })
+        .eq("ip_address", ip)
+        .gte("created_at", windowStart);
 
-    if (countError) {
-      console.error("Rate limit check failed:", countError);
-    } else if (count !== null && count >= MAX_SCANS_PER_IP_PER_HOUR) {
-      return NextResponse.json(
-        { error: "Too many scans. Try again in an hour." },
-        { status: 429 }
-      );
+      if (countError) {
+        console.error("Rate limit check failed:", countError);
+      } else if (count !== null && count >= MAX_SCANS_PER_IP_PER_HOUR) {
+        return NextResponse.json(
+          { error: "Too many scans. Try again in an hour." },
+          { status: 429 }
+        );
+      }
     }
 
     const { data, error } = await supabaseAdmin
