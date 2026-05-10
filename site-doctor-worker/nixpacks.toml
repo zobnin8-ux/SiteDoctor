@@ -1,3 +1,4 @@
+# Запасной билд без Docker. Реальный скан с Playwright собирается через Dockerfile (Railway).
 [phases.setup]
 nixPkgs = ["nodejs_22"]
 

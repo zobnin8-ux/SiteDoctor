@@ -16,6 +16,7 @@
     "@supabase/supabase-js": "^2.55.0",
     "@types/node": "^22.0.0",
     "@types/ws": "^8.5.13",
+    "playwright": "1.49.1",
     "typescript": "^5.5.0",
     "ws": "^8.18.0"
   },
