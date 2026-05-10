@@ -3,16 +3,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { isValidUrl, normalizeUrl } from "@/lib/url-utils";
 
+function readIntEnv(name: string, defaultValue: number): number {
+  const raw = process.env[name];
+  if (raw === undefined || raw === "") return defaultValue;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : defaultValue;
+}
+
 /** Сколько часов смотрим назад при подсчёте (по умолчанию 1). */
-const RATE_LIMIT_HOURS = Math.max(
-  1,
-  Number(process.env.SCAN_RATE_LIMIT_WINDOW_HOURS ?? "1") || 1
-);
-/** Макс. сканов с одного IP за окно. В prod держи умеренным; для теста — больше или отключи лимит. */
-const MAX_SCANS_PER_IP_PER_HOUR = Math.max(
-  0,
-  Number(process.env.MAX_SCANS_PER_IP_PER_HOUR ?? "5") || 5
-);
+const RATE_LIMIT_HOURS = Math.max(1, readIntEnv("SCAN_RATE_LIMIT_WINDOW_HOURS", 1));
+/** Макс. сканов с одного IP за окно. `0` = без лимита (не используй `||` — иначе 0 превращался в 5). */
+const MAX_SCANS_PER_IP_PER_HOUR = Math.max(0, readIntEnv("MAX_SCANS_PER_IP_PER_HOUR", 5));
 const RATE_LIMIT_DISABLED =
   process.env.SCAN_RATE_LIMIT_DISABLED === "true" ||
   MAX_SCANS_PER_IP_PER_HOUR === 0;
