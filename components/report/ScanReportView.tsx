@@ -4,6 +4,7 @@ import type { ReportViewModel } from "@/lib/scan-report";
 
 import { AiUnavailableBanner } from "@/components/report/AiUnavailableBanner";
 import { ReportHeader } from "@/components/report/ReportHeader";
+import { ReportIllustration } from "@/components/report/ReportIllustration";
 import { ReportHero } from "@/components/report/ReportHero";
 import { MonitorScreenshot } from "@/components/report/MonitorScreenshot";
 import { OverallScoreBlock } from "@/components/report/OverallScoreBlock";
@@ -35,6 +36,7 @@ export function ScanReportView({ model }: ScanReportViewProps) {
       style={{ backgroundImage: "url(/bg/grid-pattern.svg)" }}
     >
       <ReportHeader />
+      <ReportIllustration />
       {model.aiUnavailableBanner ? <AiUnavailableBanner /> : null}
       <ReportHero
         patient={model.hostname}
