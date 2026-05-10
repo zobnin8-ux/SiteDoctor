@@ -12,12 +12,15 @@ import { TopIssues } from "@/components/report/TopIssues";
 import { SampleFix } from "@/components/report/SampleFix";
 import { ReportFinalCta } from "@/components/report/ReportFinalCta";
 import { ReportFooter } from "@/components/report/ReportFooter";
+import { ReportSaveBlock } from "@/components/report/ReportSaveBlock";
 
 type ScanReportViewProps = {
   model: ReportViewModel;
+  scanId: string;
+  scanUrl: string;
 };
 
-export function ScanReportView({ model }: ScanReportViewProps) {
+export function ScanReportView({ model, scanId, scanUrl }: ScanReportViewProps) {
   const subScoresAi =
     model.reportKind === "ai" && model.subScores
       ? {
@@ -72,6 +75,8 @@ export function ScanReportView({ model }: ScanReportViewProps) {
       ) : null}
 
       <SampleFix before={model.sampleFix.before} after={model.sampleFix.after} />
+
+      <ReportSaveBlock scanId={scanId} scanUrl={scanUrl} />
 
       <ReportFinalCta />
       <ReportFooter />

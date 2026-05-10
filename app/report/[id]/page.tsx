@@ -47,5 +47,7 @@ export default async function ReportByScanIdPage({ params }: ReportPageProps) {
     return <ReportIncompleteState />;
   }
 
-  return <ScanReportView model={model} />;
+  return (
+    <ScanReportView model={model} scanId={id} scanUrl={data.url} />
+  );
 }

@@ -9,6 +9,9 @@ import { TopIssues } from "@/components/report/TopIssues";
 import { SampleFix } from "@/components/report/SampleFix";
 import { ReportFinalCta } from "@/components/report/ReportFinalCta";
 import { ReportFooter } from "@/components/report/ReportFooter";
+import { ReportSaveBlock } from "@/components/report/ReportSaveBlock";
+
+import { SAMPLE_REPORT } from "@/lib/sample-report";
 
 export function SampleReportDemo() {
   return (
@@ -35,6 +38,11 @@ export function SampleReportDemo() {
 
       <TopIssues />
       <SampleFix />
+      <ReportSaveBlock
+        scanId="sample"
+        scanUrl={`https://${SAMPLE_REPORT.patient}`}
+        enableEmail={false}
+      />
       <ReportFinalCta />
       <ReportFooter />
     </div>
