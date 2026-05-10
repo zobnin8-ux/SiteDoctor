@@ -3,9 +3,12 @@ function asset(path: string): string {
   return encodeURI(path);
 }
 
+/** Увеличь при замене hero PNG — сброс кеша CDN/браузера. */
+const HERO_ROBOT_ASSET_QUERY = "v=20260111b";
+
 export const ASSETS = {
   robot: {
-    hero: asset("/robot/hero-robot-transparent.png"),
+    hero: asset(`/robot/hero-robot-transparent.png?${HERO_ROBOT_ASSET_QUERY}`),
     scanning: asset("/robot/ChatGPT_Image_9_мая_2026_г___09_22_04.png"),
     report: asset("/robot/ChatGPT_Image_9_мая_2026_г___09_22_12.png"),
   },
