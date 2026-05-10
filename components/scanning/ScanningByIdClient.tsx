@@ -12,7 +12,7 @@ import {
   scanToCompletedSteps,
   type ScanStatusDb,
 } from "@/lib/scan-display";
-import { telegramHref } from "@/lib/telegram";
+import { telegramHref, telegramLinkNewTabProps } from "@/lib/telegram";
 
 type ScanRow = {
   id: string;
@@ -161,6 +161,7 @@ export function ScanningByIdClient() {
           </span>
           <a
             href={telegramHref()}
+            {...telegramLinkNewTabProps}
             className="justify-self-end text-xs font-medium text-[var(--accent-primary)] underline-offset-4 hover:underline sm:text-sm"
           >
             Связаться

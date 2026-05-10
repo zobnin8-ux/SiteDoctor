@@ -17,3 +17,9 @@ export function telegramHref(): string {
   const handle = t.replace(/^@/, "");
   return `https://t.me/${handle}`;
 }
+
+/** Открыть Telegram в новой вкладке — текущая страница отчёта остаётся открытой. */
+export const telegramLinkNewTabProps = {
+  target: "_blank",
+  rel: "noopener noreferrer",
+} as const;

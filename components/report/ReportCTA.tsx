@@ -1,5 +1,5 @@
 import { fullReportHref } from "@/lib/contact";
-import { telegramHref } from "@/lib/telegram";
+import { telegramHref, telegramLinkNewTabProps } from "@/lib/telegram";
 
 export function ReportCTA() {
   const contactTg = telegramHref();
@@ -16,6 +16,7 @@ export function ReportCTA() {
         </h3>
         <a
           href={fullReportHref()}
+          {...telegramLinkNewTabProps}
           className="mt-6 inline-flex rounded-xl bg-[#e53e3e] px-8 py-4 text-lg font-medium text-white hover:opacity-95"
         >
           Получить полный отчёт
@@ -23,6 +24,7 @@ export function ReportCTA() {
         <p className="mt-6">
           <a
             href={contactTg}
+            {...telegramLinkNewTabProps}
             className="text-[#00b8d9] hover:underline"
           >
             → Хочу чтобы вы переделали сайт

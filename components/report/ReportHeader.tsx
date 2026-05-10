@@ -1,5 +1,5 @@
 import { Logo } from "@/components/shared/Logo";
-import { telegramHref } from "@/lib/telegram";
+import { telegramHref, telegramLinkNewTabProps } from "@/lib/telegram";
 
 export function ReportHeader() {
   return (
@@ -11,6 +11,7 @@ export function ReportHeader() {
         </span>
         <a
           href={telegramHref()}
+          {...telegramLinkNewTabProps}
           className="text-xs font-medium text-[var(--accent-primary)] underline-offset-4 hover:underline sm:text-sm"
         >
           Связаться

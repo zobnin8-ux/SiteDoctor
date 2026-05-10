@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Logo } from "@/components/shared/Logo";
 import { BRAND } from "@/lib/brand";
-import { telegramHref } from "@/lib/telegram";
+import { telegramHref, telegramLinkNewTabProps } from "@/lib/telegram";
 
 export function Footer() {
   return (
@@ -28,6 +28,7 @@ export function Footer() {
           </Link>
           <a
             href={telegramHref()}
+            {...telegramLinkNewTabProps}
             className="text-[var(--text-secondary)] underline-offset-4 hover:text-[var(--accent-tech)] hover:underline"
           >
             Связаться

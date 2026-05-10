@@ -1,7 +1,7 @@
 "use client";
 
 import { Logo } from "@/components/shared/Logo";
-import { telegramHref } from "@/lib/telegram";
+import { telegramHref, telegramLinkNewTabProps } from "@/lib/telegram";
 
 export function Header() {
   return (
@@ -10,6 +10,7 @@ export function Header() {
         <Logo variant="light" className="transition-opacity hover:opacity-80" />
         <a
           href={telegramHref()}
+          {...telegramLinkNewTabProps}
           className="text-sm font-medium text-[var(--text-secondary)] underline-offset-4 hover:text-[var(--accent-tech)] hover:underline"
         >
           Связаться
