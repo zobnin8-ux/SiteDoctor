@@ -26,7 +26,7 @@ export function scanToCompletedSteps(
   if (!currentStep || currentStep === "В очереди") return 0;
   if (currentStep === "Готово") return SCAN_STEPS_UI.length;
 
-  const idx = SCAN_STEPS_UI.indexOf(currentStep);
+  const idx = SCAN_STEPS_UI.findIndex((s) => s === currentStep);
   if (idx === -1) return 0;
   return idx;
 }
