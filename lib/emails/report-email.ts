@@ -109,7 +109,7 @@ export function buildEmailHtml(params: EmailParams): string {
                 <tr>
                   <td align="center">
                     <a href="${reportUrl}" style="display: inline-block; padding: 16px 32px; background: #E53E3E; color: #FFFFFF; text-decoration: none; border-radius: 12px; font-weight: 500; font-size: 16px;">
-                      Открыть полный отчёт →
+                      Открыть отчёт →
                     </a>
                   </td>
                 </tr>
