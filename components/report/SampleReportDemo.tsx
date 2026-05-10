@@ -7,7 +7,7 @@ import { OverallScoreBlock } from "@/components/report/OverallScoreBlock";
 import { DiagnosisList } from "@/components/report/DiagnosisList";
 import { TopIssues } from "@/components/report/TopIssues";
 import { SampleFix } from "@/components/report/SampleFix";
-import { ReportCTA } from "@/components/report/ReportCTA";
+import { ReportFinalCta } from "@/components/report/ReportFinalCta";
 import { ReportFooter } from "@/components/report/ReportFooter";
 
 export function SampleReportDemo() {
@@ -35,9 +35,7 @@ export function SampleReportDemo() {
 
       <TopIssues />
       <SampleFix />
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <ReportCTA />
-      </div>
+      <ReportFinalCta />
       <ReportFooter />
     </div>
   );
