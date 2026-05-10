@@ -1,4 +1,7 @@
-import { analyzeScan } from "./ai-analyzer.js";
+import {
+  analyzeScan,
+  type AiAnalyzerResult,
+} from "./ai-analyzer.js";
 import { formatError } from "./errors.js";
 import { runPlaywrightScan } from "./playwright-scan.js";
 import { pageDataFromScanSuccess } from "./scan-mapper.js";
@@ -98,9 +101,21 @@ export async function processScan(scan: Scan): Promise<void> {
 
     console.log(`[${scan.id}] Calling AI...`);
 
-    const aiResult = await analyzeScan(
-      pageDataFromScanSuccess(scanBase, targetUrl)
-    );
+    /** Страховка: если fetch/SDK всё же зависнут, не держим строку в analyzing бесконечно. */
+    const AI_PIPELINE_HARD_MS = 240_000;
+    const aiResult = await Promise.race<AiAnalyzerResult>([
+      analyzeScan(pageDataFromScanSuccess(scanBase, targetUrl)),
+      new Promise<AiAnalyzerResult>((resolve) =>
+        setTimeout(
+          () =>
+            resolve({
+              ok: false,
+              error: "Превышено время ожидания этапа AI (общий лимит)",
+            }),
+          AI_PIPELINE_HARD_MS
+        )
+      ),
+    ]);
 
     const finalScanResult: ScanResultSuccessV2 = {
       ...scanBase,

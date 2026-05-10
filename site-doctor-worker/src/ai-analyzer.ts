@@ -49,6 +49,8 @@ export interface AiAnalyzerResult {
 
 const MAX_RETRIES = 2;
 const TIMEOUT_MS = 90_000;
+/** Загрузка PNG из Storage для Vision — без лимита fetch мог зависнуть навсегда. */
+const FETCH_SCREENSHOT_MS = 45_000;
 
 export async function analyzeScan(data: PageData): Promise<AiAnalyzerResult> {
   if (!HAS_AI || !anthropic) {
@@ -162,12 +164,21 @@ async function loadScreenshotsAsBlocks(
 
 async function fetchAsBase64(url: string): Promise<string | null> {
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(FETCH_SCREENSHOT_MS),
+    });
     if (!response.ok) return null;
     const buffer = Buffer.from(await response.arrayBuffer());
     return buffer.toString("base64");
   } catch (e) {
-    console.warn(`[AI] Failed to fetch screenshot ${url}:`, e);
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes("timeout") || msg.includes("aborted") || msg.includes("AbortError")) {
+      console.warn(
+        `[AI] Screenshot fetch timed out after ${FETCH_SCREENSHOT_MS}ms: ${url}`
+      );
+    } else {
+      console.warn(`[AI] Failed to fetch screenshot ${url}:`, e);
+    }
     return null;
   }
 }
