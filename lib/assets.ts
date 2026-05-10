@@ -4,7 +4,7 @@ function asset(path: string): string {
 }
 
 /** Увеличь при замене hero PNG — сброс кеша CDN/браузера. */
-const HERO_ROBOT_ASSET_QUERY = "v=20260111b";
+const HERO_ROBOT_ASSET_QUERY = "v=20260112a";
 
 export const ASSETS = {
   robot: {
