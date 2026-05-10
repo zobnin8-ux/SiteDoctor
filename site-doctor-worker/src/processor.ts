@@ -1,3 +1,4 @@
+import { formatError } from "./errors.js";
 import { supabase } from "./supabase.js";
 import { runPlaywrightScan } from "./playwright-scan.js";
 import type { Scan } from "./types.js";
@@ -7,7 +8,7 @@ export async function processScan(scan: Scan): Promise<void> {
   console.log(`[${scan.id}] Processing scan for ${targetUrl}`);
 
   try {
-    await supabase
+    const { error: startErr } = await supabase
       .from("scans")
       .update({
         status: "scanning",
@@ -16,6 +17,11 @@ export async function processScan(scan: Scan): Promise<void> {
         current_step: "Открываем главную страницу",
       })
       .eq("id", scan.id);
+
+    if (startErr) {
+      console.error(`[${scan.id}] Failed to start scan row:`, startErr);
+      throw startErr;
+    }
 
     const pushProgress = async (patch: {
       status: "scanning" | "analyzing";
@@ -57,8 +63,8 @@ export async function processScan(scan: Scan): Promise<void> {
 
     console.log(`[${scan.id}] ✅ Done`);
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error(`[${scan.id}] ❌ Failed:`, message);
+    const message = formatError(err);
+    console.error(`[${scan.id}] ❌ Failed:`, message, err);
 
     await supabase
       .from("scans")

@@ -19,7 +19,7 @@ Listens to Supabase Realtime for new scans and processes them.
 ## Environment variables
 
 - `SUPABASE_URL` — Supabase project URL (without `/rest/v1/`)
-- `SUPABASE_SERVICE_ROLE_KEY` — Supabase service_role key (secret!)
+- `SUPABASE_SERVICE_ROLE_KEY` — ключ **`service_role`** из вкладки **Legacy anon, service_role API keys** в Supabase (JWT вида `eyJ…`, три части через точку). Новые ключи **`sb_secret_…`** для PostgREST часто дают **`PGRST301`** — их сюда не кладите.
 
 ## Deploy (Railway)
 
