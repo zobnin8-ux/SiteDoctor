@@ -9,10 +9,6 @@ type Props = {
 };
 
 export function HeroClient({ scanCount }: Props) {
-  function bumpScanCount() {
-    fetch("/api/scan-count", { method: "POST" }).catch(() => {});
-  }
-
   return (
     <section
       id="hero"
@@ -49,7 +45,7 @@ export function HeroClient({ scanCount }: Props) {
               <UrlForm
                 className="mx-auto max-w-xl lg:mx-0 lg:mr-auto"
                 centerMicroOnMobile
-                onValidSubmit={bumpScanCount}
+                createScan
               />
             </Reveal>
           </div>

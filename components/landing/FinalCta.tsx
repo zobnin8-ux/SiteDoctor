@@ -23,7 +23,7 @@ export function FinalCta() {
           </p>
         </Reveal>
         <Reveal delay={0.08} className="mx-auto mt-8 max-w-2xl">
-          <UrlForm microCentered showMicroBullets={false} />
+          <UrlForm microCentered showMicroBullets={false} createScan />
           <p className="mt-4 text-center text-sm text-[var(--text-muted)]">
             Бесплатно. Без регистрации. Результат через минуту.
           </p>

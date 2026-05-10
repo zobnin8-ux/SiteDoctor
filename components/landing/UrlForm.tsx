@@ -11,14 +11,11 @@ import { cn } from "@/lib/utils";
 
 type UrlFormProps = {
   className?: string;
-  /** Центрировать микротекст (финальный CTA) */
   microCentered?: boolean;
-  /** На узких экранах центрировать микротекст (hero) */
   centerMicroOnMobile?: boolean;
-  /** Строка с галочками под формой (в финальном CTA — отдельная строка текста) */
   showMicroBullets?: boolean;
-  /** После успешной валидации URL, перед переходом на /scanning */
-  onValidSubmit?: () => void;
+  /** POST `/api/scan` → `/scanning/[id]` (Спринт 1). Если false — только legacy-редирект (не используется). */
+  createScan?: boolean;
 };
 
 export function UrlForm({
@@ -26,13 +23,14 @@ export function UrlForm({
   microCentered,
   centerMicroOnMobile,
   showMicroBullets = true,
-  onValidSubmit,
+  createScan = true,
 }: UrlFormProps) {
   const router = useRouter();
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     const normalized = normalizeUrl(value);
@@ -40,14 +38,55 @@ export function UrlForm({
       setError("Проверьте адрес сайта");
       return;
     }
-    onValidSubmit?.();
-    router.push(`/scanning?url=${encodeURIComponent(normalized)}`);
+
+    if (!createScan) {
+      router.push(`/scanning?url=${encodeURIComponent(normalized)}`);
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const response = await fetch("/api/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: normalized }),
+      });
+
+      if (!response.ok) {
+        const data = (await response.json().catch(() => ({}))) as {
+          error?: string;
+        };
+
+        if (response.status === 429) {
+          setError("Слишком много запросов. Попробуйте через час.");
+        } else if (data.error === "Too many scans. Try again in an hour.") {
+          setError("Слишком много запросов. Попробуйте через час.");
+        } else {
+          setError(data.error || "Не удалось начать сканирование");
+        }
+        setSubmitting(false);
+        return;
+      }
+
+      const { scanId } = (await response.json()) as { scanId?: string };
+      if (!scanId) {
+        setError("Не удалось начать сканирование");
+        setSubmitting(false);
+        return;
+      }
+
+      fetch("/api/scan-count", { method: "POST" }).catch(() => {});
+      router.push(`/scanning/${scanId}`);
+    } catch {
+      setError("Ошибка сети. Проверьте соединение.");
+      setSubmitting(false);
+    }
   }
 
   return (
     <div className={cn("w-full", className)}>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => void handleSubmit(e)}
         className="flex w-full flex-col gap-3 sm:flex-row sm:items-stretch"
       >
         <Input
@@ -63,9 +102,15 @@ export function UrlForm({
           className="min-w-0 flex-1"
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? "url-error" : undefined}
+          disabled={submitting}
         />
-        <Button type="submit" size="lg" className="shrink-0 sm:w-auto sm:min-w-[200px]">
-          Проверить сайт
+        <Button
+          type="submit"
+          size="lg"
+          className="shrink-0 sm:w-auto sm:min-w-[200px]"
+          disabled={submitting}
+        >
+          {submitting ? "Отправка…" : "Проверить сайт"}
         </Button>
       </form>
       {error ? (
