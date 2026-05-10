@@ -1,8 +1,8 @@
-import { BRAND } from "@/lib/brand";
 import { fullReportHref } from "@/lib/contact";
+import { telegramHref } from "@/lib/telegram";
 
 export function ReportCTA() {
-  const tg = BRAND.contactTelegram.replace(/^@/, "");
+  const contactTg = telegramHref();
 
   return (
     <section className="my-16 bg-[#fafaf7] py-16 text-[#1a1a1a]">
@@ -22,7 +22,7 @@ export function ReportCTA() {
         </a>
         <p className="mt-6">
           <a
-            href={`https://t.me/${tg}`}
+            href={contactTg}
             className="text-[#00b8d9] hover:underline"
           >
             → Хочу чтобы вы переделали сайт

@@ -1,7 +1,10 @@
 import { BRAND } from "@/lib/brand";
 import { telegramHref } from "@/lib/telegram";
 
-/** Полный отчёт — пока Telegram */
+/**
+ * «Получить полный отчёт» — пока это лид в Telegram (нет paywall / автовыдачи PDF).
+ * URL тот же, что у общего контакта; username задаётся в `NEXT_PUBLIC_CONTACT_TELEGRAM` или `BRAND.contactTelegram`.
+ */
 export function fullReportHref(): string {
   return telegramHref();
 }
