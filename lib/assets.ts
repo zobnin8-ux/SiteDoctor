@@ -5,7 +5,7 @@ function asset(path: string): string {
 
 export const ASSETS = {
   robot: {
-    hero: asset("/robot/ChatGPT_Image_9_мая_2026_г___09_37_47.png"),
+    hero: asset("/robot/hero-robot-transparent.png"),
     scanning: asset("/robot/ChatGPT_Image_9_мая_2026_г___09_22_04.png"),
     report: asset("/robot/ChatGPT_Image_9_мая_2026_г___09_22_12.png"),
   },
