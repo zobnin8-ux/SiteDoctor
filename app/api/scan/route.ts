@@ -12,8 +12,12 @@ function readIntEnv(name: string, defaultValue: number): number {
 
 /** Сколько часов смотрим назад при подсчёте (по умолчанию 1). */
 const RATE_LIMIT_HOURS = Math.max(1, readIntEnv("SCAN_RATE_LIMIT_WINDOW_HOURS", 1));
-/** Макс. сканов с одного IP за окно. `0` = без лимита (не используй `||` — иначе 0 превращался в 5). */
-const MAX_SCANS_PER_IP_PER_HOUR = Math.max(0, readIntEnv("MAX_SCANS_PER_IP_PER_HOUR", 5));
+/**
+ * Макс. новых сканов с одного IP за окно (по умолчанию 2 — разумно при платной рекламе).
+ * В Vercel: `MAX_SCANS_PER_IP_PER_HOUR=1` для жёстче (1 раз в час).
+ * `0` = без лимита (только если явно `SCAN_RATE_LIMIT_DISABLED=true` не выставлен — см. ниже).
+ */
+const MAX_SCANS_PER_IP_PER_HOUR = Math.max(0, readIntEnv("MAX_SCANS_PER_IP_PER_HOUR", 2));
 const RATE_LIMIT_DISABLED =
   process.env.SCAN_RATE_LIMIT_DISABLED === "true" ||
   MAX_SCANS_PER_IP_PER_HOUR === 0;
@@ -67,8 +71,14 @@ export async function POST(request: NextRequest) {
       if (countError) {
         console.error("Rate limit check failed:", countError);
       } else if (count !== null && count >= MAX_SCANS_PER_IP_PER_HOUR) {
+        const windowLabel =
+          RATE_LIMIT_HOURS === 1
+            ? "за последний час"
+            : `за последние ${RATE_LIMIT_HOURS} ч.`;
         return NextResponse.json(
-          { error: "Too many scans. Try again in an hour." },
+          {
+            error: `С этого адреса уже запущено максимум проверок (${MAX_SCANS_PER_IP_PER_HOUR}) ${windowLabel}. Попробуйте позже.`,
+          },
           { status: 429 }
         );
       }

@@ -58,9 +58,10 @@ export function UrlForm({
         };
 
         if (response.status === 429) {
-          setError("Слишком много запросов. Попробуйте через час.");
-        } else if (data.error === "Too many scans. Try again in an hour.") {
-          setError("Слишком много запросов. Попробуйте через час.");
+          setError(
+            data.error ||
+              "Слишком много проверок с вашего подключения. Попробуйте позже."
+          );
         } else {
           setError(data.error || "Не удалось начать сканирование");
         }
