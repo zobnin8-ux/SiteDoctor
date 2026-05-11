@@ -2,7 +2,8 @@
 
 import { ArrowRight } from "lucide-react";
 
-const TELEGRAM_URL = "https://t.me/A_nubi_ss";
+import { telegramHref } from "@/lib/telegram";
+
 const INSTAGRAM_URL = "https://instagram.com/zobnin.ai";
 const ZOBNIN_TECH_URL = "https://zobnin.tech";
 const SITEDOCTOR_URL = "https://sitedoctor.live";
@@ -97,7 +98,7 @@ export function ReportFinalCta() {
 
           <div className="mb-10 flex flex-col gap-3 md:flex-row md:gap-4">
             <a
-              href={TELEGRAM_URL}
+              href={telegramHref()}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-14 w-full flex-1 items-center justify-center gap-2 rounded-xl bg-[#E53E3E] px-8 text-base font-medium text-white transition-all hover:scale-[1.02] hover:bg-[#C53030] active:scale-[0.98] md:w-auto md:flex-none"

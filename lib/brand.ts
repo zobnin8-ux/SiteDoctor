@@ -4,8 +4,8 @@ export const BRAND = {
   tagline: "Диагностика сайтов",
   slogan: "Диагностируем. Чиним. Растим.",
   description: "AI-диагностика сайтов малого бизнеса за 60 секунд",
-  contactTelegram: "@zobnin",
+  contactTelegram: "@A_nubi_ss",
   contactEmail: "hi@sitedoctor.ai",
   parentBrand: "Zobnin AI",
-  parentUrl: "https://zobnin.ai",
+  parentUrl: "https://zobnin.tech",
 } as const;

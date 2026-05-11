@@ -1,3 +1,6 @@
+import { BRAND } from "@/lib/brand";
+import { telegramHref } from "@/lib/telegram";
+
 interface EmailParams {
   reportUrl: string;
   scanUrl: string;
@@ -132,7 +135,7 @@ export function buildEmailHtml(params: EmailParams): string {
                   Если хотите чтобы я починил сайт по этому отчёту — напишите в Telegram или Instagram, обсудим.
                 </p>
                 <p style="margin: 0;">
-                  <a href="https://t.me/A_nubi_ss" style="color: #E53E3E; text-decoration: none;">@A_nubi_ss</a>
+                  <a href="${telegramHref()}" style="color: #E53E3E; text-decoration: none;">${escapeHtml(BRAND.contactTelegram)}</a>
                   &nbsp;·&nbsp;
                   <a href="https://instagram.com/zobnin.ai" style="color: #E53E3E; text-decoration: none;">@zobnin.ai</a>
                 </p>
