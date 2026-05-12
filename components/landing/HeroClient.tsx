@@ -1,5 +1,7 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
+
 import { HeroRobot } from "@/components/shared/HeroRobot";
 import { UrlForm } from "@/components/landing/UrlForm";
 import { Reveal } from "@/components/landing/motion";
@@ -9,6 +11,8 @@ type Props = {
 };
 
 export function HeroClient({ scanCount }: Props) {
+  const reduceMotion = useReducedMotion() ?? false;
+
   return (
     <section
       id="hero"
@@ -19,15 +23,26 @@ export function HeroClient({ scanCount }: Props) {
         <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:gap-16">
           <div className="flex w-full flex-col items-center lg:order-2 lg:w-[520px] lg:max-w-[48%]">
             <HeroRobot />
-            <Reveal className="mt-4 w-full text-center lg:mt-4" delay={0.2}>
-              <p className="text-sm text-[var(--text-muted)]">
-                Сегодня осмотрено:{" "}
-                <span className="font-mono font-medium text-[var(--text-primary)]">
-                  {scanCount.toLocaleString("ru-RU")}
-                </span>{" "}
-                сайтов
-              </p>
-            </Reveal>
+            <motion.p
+              className="mt-4 w-full text-center text-sm text-[var(--text-muted)] lg:mt-4"
+              {...(reduceMotion
+                ? {}
+                : {
+                    initial: { opacity: 0, y: 22 },
+                    animate: { opacity: 1, y: 0 },
+                    transition: {
+                      duration: 0.6,
+                      delay: 0.35,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                  })}
+            >
+              Сегодня осмотрено:{" "}
+              <span className="font-mono font-medium text-[var(--text-primary)]">
+                {scanCount.toLocaleString("ru-RU")}
+              </span>{" "}
+              сайтов
+            </motion.p>
           </div>
 
           <div className="w-full flex-1 text-center lg:order-1 lg:text-left">
